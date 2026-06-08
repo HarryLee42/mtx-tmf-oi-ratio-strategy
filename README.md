@@ -1,19 +1,15 @@
-# 散戶多空比反向交易策略研究：公開成果摘要
+# 散戶多空比反向交易策略研究
 
-這是履歷用的公開成果頁。完整程式碼、原始資料與交易明細保留在 private repository；本頁只公開可閱讀的研究摘要、成果簡報與結果圖表。
-
-> 本專案僅作為量化研究與學習展示，不構成投資建議。公開版本不包含原始 CSV/XLSX/PDF、課程資料、交易明細或可直接重跑的程式碼。
-
+> 本專案僅作為量化研究與學習展示，不構成投資建議。
 ## 快速連結
 
-- [成果簡報 PDF](artifacts/retail-ratio-contrarian-report.pdf)
 - [MTX 策略 vs Buy-and-hold](charts/mtx-strategy-vs-benchmark.png)
 - [Walk-forward 視窗比較](charts/walk-forward-window-metrics.png)
 - [TMF 延伸分析](charts/tmf-equity-curve.png)
 
 ## 專案定位
 
-本研究檢驗台指期相關商品中，散戶多空部位變化是否具有反向交易訊號價值。重點不是宣稱策略已經形成穩定 Alpha，而是建立一套能控制 look-ahead bias、納入交易成本、並能用樣本外與 walk-forward 結果檢查策略穩定性的研究流程。
+本研究檢驗台指期相關商品中，散戶多空部位變化是否具有反向交易訊號價值。策略並沒有形成穩定 Alpha，而是建立一套能控制 look-ahead bias、納入交易成本、並能用樣本外與 walk-forward 結果檢查策略穩定性的研究流程。
 
 | 項目 | 內容 |
 | --- | --- |
@@ -87,6 +83,4 @@ TMF baseline 為正報酬，但樣本短、交易次數少，且績效受少數�
 - 尚未納入滑價、保證金、流動性衝擊與動態部位管理。
 - 目前是 rule-based strategy 與驗證流程展示，尚未加入機器學習模型。
 
-## 履歷摘要
 
-以 Python、pandas、Backtrader 與 Optuna 建立散戶多空比反向交易策略研究，整理 MTX 2014-2026 日資料，納入交易成本、ATR 停損、look-ahead bias 控制、buy-and-hold benchmark、in-sample/out-of-sample 與 rolling walk-forward 驗證；並延伸比較 TMF/MTX 契約乘數與曝險差異，分析策略泛化能力、drawdown、交易次數與少數交易主導風險。
