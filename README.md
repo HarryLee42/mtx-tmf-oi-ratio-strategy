@@ -1,11 +1,13 @@
 # 散戶多空比反向交易策略研究
 
-> 本專案僅作為量化研究與學習展示，不構成投資建議。
+> 本專案僅作為量化研究與學習展示，不構成投資建議。公開版本只保留研究摘要、成果圖表與簡報，不包含原始資料、交易明細或完整回測程式碼。
+
 ## 快速連結
 
 - [MTX 策略 vs Buy-and-hold](charts/mtx-strategy-vs-benchmark.png)
 - [Walk-forward 視窗比較](charts/walk-forward-window-metrics.png)
 - [TMF 延伸分析](charts/tmf-equity-curve.png)
+- [TMF 訊號、MTX 下單補充](charts/tmf-signal-mtx-execution.png)
 
 ## 專案定位
 
@@ -23,6 +25,8 @@
 ## 方法摘要
 
 策略以散戶多空比與價格變化的背離作為反向交易訊號。訊號在第 t 日收盤後產生，進場在第 t+1 日開盤執行，避免使用同日未來資訊。回測納入交易成本，並使用 ATR 初始停損與 ATR 追蹤停損控制單筆風險。
+
+最新補充測試加入「TMF 生成訊號、MTX 1 口執行下單」情境，用來分離訊號來源與交易商品。
 
 ## 主要結果
 
@@ -60,27 +64,28 @@ Walk-forward 結果顯示最佳化未穩定改善樣本外表現，參數穩定�
 
 ### TMF 延伸分析
 
-TMF 主分析使用固定 1 口，另做 TMF 5 口 vs MTX 1 口的曝險控制比較，因為 TMF 每點 10 元、MTX 每點 50 元。
+TMF 主分析使用固定 1 口，另做 TMF 5 口 vs MTX 1 口的曝險控制比較，因為 TMF 每點 10 元、MTX 每點 50 元。補充測試再把交易商品固定為 MTX 1 口，比較 MTX 原訊號與 TMF 訊號在同一交易商品上的差異。
 
 | 比較 | 報酬 | Sharpe | 最大回撤 | 交易次數 |
 | --- | ---: | ---: | ---: | ---: |
 | TMF 1 口 baseline | 17.26% | 0.87 | 11.08% | 24 |
 | TMF 1 口 buy-and-hold | 33.40% | - | - | - |
 | TMF 5 口 baseline | 86.32% | 0.95 | 50.42% | 24 |
-| MTX 1 口 same-period baseline | 54.39% | 0.76 | 46.30% | - |
+| MTX 1 口 same-period baseline | 54.39% | 0.76 | 46.30% | 19 |
+| TMF signal -> MTX execution | 86.33% | 0.95 | 50.32% | 24 |
 
-TMF baseline 為正報酬，但樣本短、交易次數少，且績效受少數獲利交易影響明顯，不宜過度解讀。
+TMF baseline 為正報酬，但樣本短、交易次數少，且績效受少數獲利交易影響明顯，不宜過度解讀。跨商品訊號測試中，TMF 訊號在 MTX 下單的結果高於 MTX 原訊號，但仍落後 MTX same-period buy-and-hold，因此仍不能宣稱具備穩定 Alpha。
 
 ![TMF equity curve](charts/tmf-equity-curve.png)
 
 ![TMF vs MTX exposure-controlled equity](charts/tmf-exposure-controlled-equity.png)
 
+![TMF signal with MTX execution](charts/tmf-signal-mtx-execution.png)
+
 ## 研究限制
 
 - 策略並未穩定打敗 buy-and-hold。
 - Walk-forward 最佳化只在 4/8 測試視窗中打敗 baseline，改善不穩定。
-- TMF 樣本期間較短，交易次數僅 24 筆。
+- TMF 樣本期間較短，主分析與跨商品訊號測試皆只有 24 筆交易。
 - 尚未納入滑價、保證金、流動性衝擊與動態部位管理。
 - 目前是 rule-based strategy 與驗證流程展示，尚未加入機器學習模型。
-
-
